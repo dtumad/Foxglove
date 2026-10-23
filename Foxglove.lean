@@ -16,6 +16,7 @@ import Foxglove.RuleProofs
 import Foxglove.Rules
 import Foxglove.Rules.Conditioning
 import Foxglove.Rules.Derived
+import Foxglove.Rules.Independence
 import Foxglove.Rules.Distribution
 import Foxglove.Rules.Ownership
 import Foxglove.Rules.Sure
