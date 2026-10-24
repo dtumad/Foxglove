@@ -1,7 +1,7 @@
 module
 
 public import Foxglove.Interp.Bernoulli.Helper
-public import Foxglove.Interp.OracleComp.Basic
+public import Foxglove.Interp.Bernoulli.Split
 
 
 @[expose] public section

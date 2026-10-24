@@ -8,7 +8,10 @@ Foxglove is a Lean 4 formalisation, on top of
 [iris-lean](https://github.com/leanprover-community/iris-lean), of a separation logic for
 probabilistic programs. It is intended to support the verification of cryptographic
 primitives formalised in [ArkLib](https://github.com/Verified-zkEVM/ArkLib), whose programs are
-written in [VCVio](https://github.com/Verified-zkEVM/VCV-io)'s `OracleComp` monad.
+written in [VCVio](https://github.com/Verified-zkEVM/VCVio)'s `OracleComp` monad. Foxglove itself
+does not depend on VCVio: any monad that compiles to coin flips (`BernoulliInterpretable`) can
+be reasoned about, and the bridge to VCVio's `OracleComp` and its measure semantics lives on
+the VCVio side.
 
 The logic is that of **Bluebell** (Bao, D'Osualdo and Farzan,
 [arXiv:2402.18708](https://arxiv.org/abs/2402.18708)), restricted to its unary fragment. From
@@ -62,12 +65,13 @@ This work was generously funded by the Ethereum Foundation.
 | `Foxglove/Algebra/OURA.lean` | Ordered unital resource algebras, and the BI built from upper sets of one (`Iris.UpperSetBI`). Intended to be upstreamed into [iris-lean](https://github.com/leanprover-community/iris-lean)'s `IrisMath`. |
 | `Foxglove/Algebra/MeasureOnSpace.lean` | Probability spaces carrying their own σ-algebra (`PSpace`, `PSp`), their independent product and weighted sums, bounded footprints, and the ordered unital resource algebra they form. Intended to split out into a probabilistic-foundations repo. |
 | `Foxglove/Algebra/PMF.lean`, `Kernel.lean`, `PSpace.lean` | The measure theory the rules rest on: products, fusion and pushforward of laws and integration against them; Markov kernels into a space; trims, tilts, mixtures, null sets and the law of a random variable on a space. |
-| `Foxglove/Interp/Bernoulli/` | The free Bernoulli monad `BernoulliM` (`flip`) and its big-step semantics over the tape: `ProbTree`, `fixpoint`, `bigStep`, `run`, the fresh randomness `freshMs` of a run, and the composition of runs (`run_bind`). `Helper.lean` holds `ℝ≥0∞` bookkeeping, `Example.lean` worked examples at the level of the semantics. |
-| `Foxglove/Interp/OracleComp/` | `OracleBernoulliInterpretable` and `interp`: compiling a VCVio `OracleComp` down into `BernoulliM`, with `split` (rejection sampling on coin flips) implementing the uniform oracle `unifSpec`. |
+| `Foxglove/Interp/Bernoulli/` | The free Bernoulli monad `BernoulliM` (`flip`) and its big-step semantics over the tape: `ProbTree`, `fixpoint`, `bigStep`, `run`, the fresh randomness `freshMs` of a run, and the composition of runs (`run_bind`). `Split.lean` holds uniform sampling by rejection on coin flips (`split`, `lawOf_split`), `Helper.lean` `ℝ≥0∞` bookkeeping, `Example.lean` worked examples at the level of the semantics. |
 | `Foxglove/Assertion.lean` | The assertion language: `FProp`, ownership `own`/`ownP`, joint conditioning `𝒞⟨μ⟩ v; K v`, laws `E ~ μ`, sure facts `⌈E⌉`, `valuePost`, and the weakest precondition `wp`. |
 | `Foxglove/Rules.lean` | The rules of the logic: Bluebell's unary rules and Amaryllis's bind and conditioning rules, one theorem per rule, each sign-posted with the paper's name. |
 | `Foxglove/Rules/` | What the rules are proved from: theorems specific to each connective (`Ownership`, `Sure`, `Conditioning`, `Distribution`, `WP`), the semantic cores of the long `wp` rules (`WP/Swap`, `WP/Bind`, `WP/Dist`), the side conditions on postconditions (`WP/Post`), and the counterexamples that fix the side conditions (`WP/Counterexamples`). |
-| `Foxglove/Example.lean` | Worked examples in the logic: BI facts in the proof mode, and the uniform-sampling specification of the `unifSpec` query, proved from the rules. |
+| `Foxglove/Rules/Derived.lean` | Derived rules for laws: `pure`, sequencing (`wp_bind_law`, `wp_bind_pure`), law descriptions, and the uniform law of `split`. |
+| `Foxglove/Adequacy.lean` | Adequacy: a closed program's specification determines its law, which is its tape law `lawPMF` (`lawPMF_eq_of_wp`, `wp_hasDistribution_iff_lawPMF`). |
+| `Foxglove/Example.lean` | Worked examples in the logic: BI facts in the proof mode, uniform sampling by rejection proved from the rules, and polynomial identity testing (the root test and Schwartz–Zippel). |
 | `Foxglove/porting.md` | Bookkeeping of the Bluebell rule port. |
 
 ## Building

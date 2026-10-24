@@ -249,7 +249,9 @@ def wp {α : Type} [Inhabited α] {m : Type → Type} [Interp.BernoulliInterpret
       exact ⟨b, hb1, hb2, le_trans hb3 (sup_le_sup_right (msOf_mono hxy) _), hb4⟩
   }
 
-macro "⦃" x:Lean.Parser.Term.funBinder ", " Q:term "⦄" : term => `(fun $x ↦ iprop($Q))
+/-- A postcondition `⦃X, Q⦄`, the assertion `Q` about the result `X`. Scoped: unscoped, the `⦃`
+token would also capture core's `Std.WP` triple notation `⦃P⦄ x ⦃Q⦄`. -/
+scoped macro "⦃" x:Lean.Parser.Term.funBinder ", " Q:term "⦄" : term => `(fun $x ↦ iprop($Q))
 
 open Lean PrettyPrinter Delaborator SubExpr Elab Term in
 @[app_unexpander wp]

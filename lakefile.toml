@@ -14,9 +14,9 @@ git.subDir = "Iris"
 rev = "v4.35.0"
 
 [[require]]
-name = "VCVio"
-git = "https://github.com/Verified-zkEVM/VCVio"
-rev = "7c3dc0bb2962e78e6d9b80a512fab8157a8c8aba"
+name = "cslib"
+scope = "leanprover"
+rev = "v4.35.0"
 
 [[lean_lib]]
 name = "Foxglove"
